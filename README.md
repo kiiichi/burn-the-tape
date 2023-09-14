@@ -81,3 +81,9 @@ FDTD is finite difference time domain 时域有限差分算法
 
 ### 1.2.2. Set Mesh
 Mesh step need to be finer when doing convergence testing
+
+### 1.2.3. Set Source
+Can only choose pulse light, may because of time domain...
+
+### 1.2.4. Set Monitor
+It is fine for the monitors to extend outside of the simulation region.
