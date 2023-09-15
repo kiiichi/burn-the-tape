@@ -87,3 +87,16 @@ Can only choose pulse light, may because of time domain...
 
 ### 1.2.4. Set Monitor
 It is fine for the monitors to extend outside of the simulation region.
+
+## 1.3. Running the simulation
+
+### 1.3.1. Check meterials properties
+
+### 1.3.2. Check memory requirements
+If memory requirements are too high, to reduce memory requirements:
+   1. use a coarser simulation mesh
+   2. use symmetry in the boundary conditions if the source and structure have symmetry
+   3. reduce monitor size and number of recorded frequency points
+
+### 1.3.3. Job manager during simulation
+Status: initialization -> meshing -> running -> saving
