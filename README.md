@@ -162,8 +162,9 @@ Status: initialization -> meshing -> running -> saving
 参考:https://optics.ansys.com/hc/en-us/articles/360034902393-Frequency-domain-Profile-and-Power-monitor-Simulation-object
 
 ### 1.4.1. E: Electric field data as a function of position and frequency/wavelength.
-####1.4.1.1. Vactor OPeration： XYZ三个分量和Magnitude。 其中 Magnitude=sqrt(abs(Ex)^2+abs(Ey)^2+abs(Ez)^2)
-####1.4.1.2. Scalar OPeration:
+
+#### 1.4.1.1  Vactor OPeration： XYZ三个分量和Magnitude。 其中 Magnitude=sqrt(abs(Ex)^2+abs(Ey)^2+abs(Ez)^2)
+#### 1.4.1.2. Scalar OPeration:
  - Re： 是显示量的实部，一般用于复数，比如Ex，Ey和Ez等；或者透射率T（它没有虚部）;
  - -Re： 将实部取负号，这个操作一般仅适用于透射率，这是因为透射率根据颇印廷矢量与监视器法线方向点乘后积分得到的，而监视器法线按规定是沿轴正向为正，沿负向为负，因此当能流沿轴负向传播时，得到的透射率是负的，需要在前面加负号才能为正。
  - Abs：取绝对值。
