@@ -87,7 +87,30 @@ Can only choose pulse light, may because of time domain...
 
 ### 1.2.4. Set Monitor
 It is fine for the monitors to extend outside of the simulation region.
-
+1. Refractive index
+   - Measures refractive index and surface conductivity over space.
+   - Used to check mesh order and meshed structure cross-section.
+2. Field time
+   - Measures E, H fields over time by default.
+   - Returns E, H, the spectrum of E and H.
+   - Record and return P if specified.
+3. Movie
+   - Generates an mp4 movie file in the current working directory showing the specified field component vs. time over the monitor area.
+4. Frequency-domain monitors (power and profile)
+   - Shows frequency-domain E, H data by default.
+   - Returns E, H and T.
+   - T gives net transmission and is only available for linear or 2D monitors in 2D simulations or 2D monitors in 3D simulations.
+   - Can return P if specified.
+   - Power uses the nearest mesh cell interpolation, whereas profile uses the specified position.
+5. Mode expansion
+   - Performs overlap calculations between calculated modes and recorded fields from a frequency domain monitor to get the power traveling in selected modes of a waveguide or fiber.
+   - Can be used to extract S-parameters of a device, although using Port objects is simpler.
+6. ports
+   - Added using the Ports button in the top toolbar.
+   - Acts as a mode source as well as a power monitor and mode expansion monitor.
+   - Returns the same results as mode source, power monitor, and mode expansion monitor in addition to S result which gives the S-parameter.
+   - The port group, which is a child of the FDTD simulation region, contains all port objects and sets the active port and mode to use as the source in the simulation.
+   - Ports can be used in conjunction with the S-parameter sweep tool to extract the full S-parameters of a device and export the S-parameters to INTERCONNECT for circuit simulations.
 ## 1.3. Running the simulation
 
 ### 1.3.1. Check meterials properties
@@ -100,3 +123,16 @@ If memory requirements are too high, to reduce memory requirements:
 
 ### 1.3.3. Job manager during simulation
 Status: initialization -> meshing -> running -> saving
+
+
+## 4.3. export data(Frequency-domain Profile and Power monitor )
+1. E
+   - Electric field data as a function of position and frequency/wavelength.
+2. H
+   - Magnetic field data as a function of position and frequency/wavelength.
+3. P
+   - Poynting vector as a function of position and frequency/wavelength.
+4. T
+   - Transmission as a function of frequency/wavelengt. Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power.(Negative values mean the power is flowing in the negative direction.)
+(https://optics.ansys.com/hc/en-us/articles/360034902393-Frequency-domain-Profile-and-Power-monitor-Simulation-object)
+
