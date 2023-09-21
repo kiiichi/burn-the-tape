@@ -91,6 +91,12 @@ It is fine for the monitors to extend outside of the simulation region.
 ## 1.3. Running the simulation
 
 ### 1.3.1. Check meterials properties
+无论是储存在 database 里现成的数据还是我们导入的数据都是点集，而模拟需要使用连续的函数，因此需要先对数据集进行拟合得到拟合方程。正确的数据和有效的拟合是仿真准确的必要条件。因此每当更换材料或仿真波长范围都应检查拟合是否合适。
+
+- [提升拟合效果的方法](https://optics.ansys.com/hc/en-us/articles/360034915053)：
+默认情况下，采样数据材质的容差为0.1，最大系数为6。在许多情况下，这些都是合理的值。但是，在运行模拟之前检查配合始终是一个好的做法。过拟合和欠拟合都不是好的选择。
+  1. Fit tolerance: 可以将该值设为0，在这种情况下程序将在 Max coefficients 的限制下尽可能找到最小的 RMS
+  2. Max coefficients
 
 ### 1.3.2. Check memory requirements
 If memory requirements are too high, to reduce memory requirements:
@@ -100,3 +106,4 @@ If memory requirements are too high, to reduce memory requirements:
 
 ### 1.3.3. Job manager during simulation
 Status: initialization -> meshing -> running -> saving
+
