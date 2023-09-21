@@ -137,12 +137,15 @@ Status: initialization -> meshing -> running -> saving
  - Abs：取绝对值。
  - Abs^2：取绝对值平方。
  - angle：相位
-参考https://forum.ansys.com/forums/topic/ansys-insight-%e6%9c%89%e5%85%b3visualizer%e7%9a%84%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98/
+
+
+   参考https://forum.ansys.com/forums/topic/ansys-insight-%e6%9c%89%e5%85%b3visualizer%e7%9a%84%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98/
 
 ### 1.4.2. H. Magnetic field data as a function of position and frequency/wavelength.
 ### 1.4.3. P. Poynting vector as a function of position and frequency/wavelength.
 ### 1.4.4. T. Transmission as a function of frequency/wavelengt. Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power.(Negative values mean the power is flowing in the negative direction.)
 $T(f)=\frac{\frac{1}{2}\int Re(P(f))dS }{sourcepower(f)}$ (T(f) is the normalized transmission as a function of frequency，P(f) is the Poynting vector and dS is the surface normal.)
+
 参考:https://optics.ansys.com/hc/en-us/articles/360034405354-transmission-Script-command
 
 
