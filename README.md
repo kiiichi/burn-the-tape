@@ -17,21 +17,37 @@ FDTD is finite difference time domain 时域有限差分算法
 使用 lumerical FDTD 的 workflow：
 
 1. setup simulation
-    1.1. define meterials (use default database or import manually)
-    1.2. add structures
-    1.3. add simulation region and mesh
-    1.4. add sources and monitors
+
+   1.1. define meterials (use default database or import manually)
+
+   1.2. add structures
+
+   1.3. add simulation region and mesh
+
+   1.4. add sources and monitors
+
 2. before simulation
+
    2.1. check meterials properties
+
    2.2. check memory requirements
+
 3. run simulation
+
 4. analyse
+
    4.1. collect monitor data
+
    4.2. plot
+
    4.3. export data
+
    4.4. post-process
+
 5. iteration design
+
 6. convergence test
+
     e.g. increase mesh accuracy
 
 ## 1.2. Setup Simulation
