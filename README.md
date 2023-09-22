@@ -124,7 +124,7 @@ It is fine for the monitors to extend outside of the simulation region.
    - Returns E, H and T.
    - T gives net transmission and is only available for linear or 2D monitors in 2D simulations or 2D monitors in 3D simulations.
    - Can return P if specified.
-   - Power uses the nearest mesh cell interpolation, whereas profile uses the specified position.
+   - The only difference between the two monitor types is the spatial interpolation method used.Power uses the nearest mesh cell interpolation, whereas profile uses the specified position.
 5. Mode expansion
    - Performs overlap calculations between calculated modes and recorded fields from a frequency domain monitor to get the power traveling in selected modes of a waveguide or fiber.
    - Can be used to extract S-parameters of a device, although using Port objects is simpler.
