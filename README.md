@@ -92,7 +92,8 @@ FDTD is finite difference time domain 时域有限差分算法
    - 是Periodic的一般形式；它是一种普遍的边界条件，由于数学上要求它只能针对指定的波长有指定的入射角，其它波长的实际入射角将不同于指定的那个入射角，因此一般情况下，它适合单波长计算。
 
 5. **Symmetric/anti-symmetric**
-   - 对称/反对称边界条件。要求：结构对称性，光源的偏振也要对称。
+   - 对称/反对称边界条件。要求：结构对称性，光源的偏振也要对称。 
+   详见参考： https://optics.ansys.com/hc/en-us/articles/360034382694-Symmetric-and-anti-symmetric-BCs-in-FDTD-and-MODE
 
 6. **PMC**
    - PMC boundary conditions are the magnetic equivalent of the PEC boundaries. The component of the magnetic field parallel to a PMC boundary is zero and the component of the electric field perpendicular to a PMC boundary is also zero.
@@ -109,7 +110,30 @@ Can only choose pulse light, may because of time domain...
 ### 1.2.4. Set Monitor
 
 It is fine for the monitors to extend outside of the simulation region.
-
+1. Refractive index
+   - Measures refractive index and surface conductivity over space.
+   - Used to check mesh order and meshed structure cross-section.
+2. Field time
+   - Measures E, H fields over time by default.
+   - Returns E, H, the spectrum of E and H.
+   - Record and return P if specified.
+3. Movie
+   - Generates an mp4 movie file in the current working directory showing the specified field component vs. time over the monitor area.
+4. Frequency-domain monitors (power and profile)
+   - Shows frequency-domain E, H data by default.
+   - Returns E, H and T.
+   - T gives net transmission and is only available for linear or 2D monitors in 2D simulations or 2D monitors in 3D simulations.
+   - Can return P if specified.
+   - Power uses the nearest mesh cell interpolation, whereas profile uses the specified position.
+5. Mode expansion
+   - Performs overlap calculations between calculated modes and recorded fields from a frequency domain monitor to get the power traveling in selected modes of a waveguide or fiber.
+   - Can be used to extract S-parameters of a device, although using Port objects is simpler.
+6. ports
+   - Added using the Ports button in the top toolbar.
+   - Acts as a mode source as well as a power monitor and mode expansion monitor.
+   - Returns the same results as mode source, power monitor, and mode expansion monitor in addition to S result which gives the S-parameter.
+   - The port group, which is a child of the FDTD simulation region, contains all port objects and sets the active port and mode to use as the source in the simulation.
+   - Ports can be used in conjunction with the S-parameter sweep tool to extract the full S-parameters of a device and export the S-parameters to INTERCONNECT for circuit simulations.
 ## 1.3. Running the simulation
 
 ### 1.3.1. Check meterials properties
@@ -132,3 +156,30 @@ If memory requirements are too high, to reduce memory requirements:
 ### 1.3.3. Job manager during simulation
 
 Status: initialization -> meshing -> running -> saving
+
+
+## 1.4. export data(Frequency-domain Profile and Power monitor )
+参考:https://optics.ansys.com/hc/en-us/articles/360034902393-Frequency-domain-Profile-and-Power-monitor-Simulation-object
+
+### 1.4.1. E: Electric field data as a function of position and frequency/wavelength.
+
+#### 1.4.1.1.  Vactor OPeration： XYZ三个分量和Magnitude。 其中 Magnitude=sqrt(abs(Ex)^2+abs(Ey)^2+abs(Ez)^2)
+#### 1.4.1.2. Scalar OPeration:
+ - Re： 是显示量的实部，一般用于复数，比如Ex，Ey和Ez等；或者透射率T（它没有虚部）;
+ - -Re： 将实部取负号，这个操作一般仅适用于透射率，这是因为透射率根据颇印廷矢量与监视器法线方向点乘后积分得到的，而监视器法线按规定是沿轴正向为正，沿负向为负，因此当能流沿轴负向传播时，得到的透射率是负的，需要在前面加负号才能为正。
+ - Abs：取绝对值。
+ - Abs^2：取绝对值平方。
+ - angle：相位
+
+
+   参考https://forum.ansys.com/forums/topic/ansys-insight-%e6%9c%89%e5%85%b3visualizer%e7%9a%84%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98/
+
+### 1.4.2. H： Magnetic field data as a function of position and frequency/wavelength.
+### 1.4.3. P： Poynting vector as a function of position and frequency/wavelength.
+### 1.4.4. T： Transmission as a function of frequency/wavelengt. 
+Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power.(Negative values mean the power is flowing in the negative direction.)
+$T(f)=\frac{\frac{1}{2}\int Re(P(f))dS }{sourcepower(f)}$ (T(f) is the normalized transmission as a function of frequency，P(f) is the Poynting vector and dS is the surface normal.)
+
+参考:https://optics.ansys.com/hc/en-us/articles/360034405354-transmission-Script-command
+
+
