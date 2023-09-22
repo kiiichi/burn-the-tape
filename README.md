@@ -166,7 +166,7 @@ Status: initialization -> meshing -> running -> saving
 
 ### 1.4.1. E (Electric field)
 
-Electric field data as a function of position and $frequency/wavelength$
+Electric field data as a function of position and frequency/wavelength
 
 1. Vactor Operation
    - XYZ三个分量和Magnitude。其中
@@ -184,20 +184,20 @@ Electric field data as a function of position and $frequency/wavelength$
 
 ### 1.4.2. H (Magnetic field)
 
-Magnetic field data as a function of position and $frequency/wavelength$
+Magnetic field data as a function of position and frequency/wavelength
 
 ### 1.4.3. P (Poynting vector)
 
-Poynting vector as a function of position and $frequency/wavelength$
+Poynting vector as a function of position and frequency/wavelength
 
 ### 1.4.4. T (Transmission)
 
-Transmission as a function of $frequency/wavelength$
+Transmission as a function of frequency/wavelength
 
-- Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power.(Negative values mean the power is flowing in the negative direction.)
+- Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power. (Negative values mean the power is flowing in the negative direction.)
 
 $T(f)=\frac{\frac{1}{2}\int Re(P(f)) dS }{sourcepower(f)}$
 
-T(f) is the normalized transmission as a function of frequency，P(f) is the Poynting vector and dS is the surface normal.
+T(f) is the normalized transmission as a function of frequency, P(f) is the Poynting vector and dS is the surface normal.
 
 参考: <https://optics.ansys.com/hc/en-us/articles/360034405354-transmission-Script-command>
