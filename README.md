@@ -144,6 +144,7 @@ It is fine for the monitors to extend outside of the simulation region.
 
 - [提升拟合效果的方法](https://optics.ansys.com/hc/en-us/articles/360034915053)：
 默认情况下，采样数据材质的容差为0.1，最大系数为6。在许多情况下，这些都是合理的值。但是，在运行模拟之前检查配合始终是一个好的做法。过拟合和欠拟合都不是好的选择。
+
   1. Fit tolerance: 可以将该值设为0，在这种情况下程序将在 Max coefficients 的限制下尽可能找到最小的 RMS
   2. Max coefficients
 
