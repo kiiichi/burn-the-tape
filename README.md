@@ -168,7 +168,8 @@ Status: initialization -> meshing -> running -> saving
 Electric field data as a function of position and $frequency/wavelength$
 
 1. Vactor Operation
-   - XYZ三个分量和Magnitude。其中 $Magnitude=sqrt(abs(Ex)^2+abs(Ey)^2+abs(Ez)^2)$
+   - XYZ三个分量和Magnitude。其中
+   $Magnitude = \sqrt{ \lvert Ex \rvert^2 + \lvert Ey \rvert^2 + \lvert Ez \rvert^2}$
 
 2. Scalar Operation
 
@@ -194,7 +195,7 @@ Transmission as a function of $frequency/wavelength$
 
 - Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power.(Negative values mean the power is flowing in the negative direction.)
 
-$T(f)=\frac{\frac{1}{2}\int Re(P(f))dS }{sourcepower(f)}$
+$T(f)=\frac{\frac{1}{2}\int Re(P(f)) dS }{sourcepower(f)}$
 
 T(f) is the normalized transmission as a function of frequency，P(f) is the Poynting vector and dS is the surface normal.
 
