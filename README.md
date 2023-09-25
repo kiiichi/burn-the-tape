@@ -1,8 +1,9 @@
 ### ——不尽长江滚滚流片
 
 记录学习流片的过程
+[Ansys lumerical FDTD 入门](https://courses.ansys.com/index.php/learning-track/ansys-lumerical-fdtd/)
 
-# 1. [Ansys lumerical FDTD 入门](https://courses.ansys.com/index.php/learning-track/ansys-lumerical-fdtd/)
+# 1. The First Simulation on Lumerical FDTD
 
 ## 1.1. Intro
 
@@ -201,3 +202,50 @@ $T(f)=\frac{\frac{1}{2}\int Re(P(f)) dS }{sourcepower(f)}$
 T(f) is the normalized transmission as a function of frequency, P(f) is the Poynting vector and dS is the surface normal.
 
 参考: <https://optics.ansys.com/hc/en-us/articles/360034405354-transmission-Script-command>
+
+# 2. FDTD Algorithm
+
+## 2.2. FDTD method
+
+### 2.2.1. How the solver get the field components within the grid cell (Yee cell)?
+
+FDTD将空间和时间划分为离散网格并求阶麦克斯韦方程，空间的网格步长为 $\delta x$ $\delta y$ $\delta z$，时间的网格步长为 $\delta t$，分别用 i, j, k, n 表示。步长习惯用上标和下标表示。例如：
+- $\overrightarrow{E} ^{n+\frac{1}{2}} _{i+\frac{1}{2}}$ 表示 E 在时间为 n，空间 x 方向为 i 时，以 1/2 的步长求解。
+
+在模拟开始时 E 和 H 通常为0，随后以时间步长 1/2 进行迭代：
+
+- $\overrightarrow{H}^0 \xrightarrow{Maxwell} \overrightarrow{E}^\frac{1}{2} \xrightarrow{Maxwell} \overrightarrow{H}^1 \to \overrightarrow{E}^\frac{3}{2} \to \overrightarrow{H}^2 \to \overrightarrow{E}^\frac{5}{2} \to \overrightarrow{H}^3 \to ...$
+
+可见 E 与 H 不会在同一时间被计算，他们总是偏移了 1/2 个时间步长。在 Monitor 出数据时，会对 E 进行插值，以消去这个偏移。这将使得 FDTD 计算的电磁场与正确解之间的**误差 $Error$ 将随着时间步长 $\delta t$ 的平方变化：$Error \propto \delta t^2$**
+
+Mesh 的最小单元 Yee Cell 与时间交替采样类似，在空间上对 $E_x \ E_y \ E_z \ H_x \ H_y \ H_z$ 也采用交错采样，即使每一个磁场分量由四个电场分量环绕，每一个电场分量由四个磁场分量环绕。在 Monitor 出数据时，会对所有的空间分量进行插值来得到场在 Yee Cell 中心的值。**对于一些特殊的计算，如计算金属表面的光的吸收等，可以关闭此插值。**
+
+### 2.2.2. 2D vs 3D FDTD
+
+2D 相当于材料在 z 方向上长度无限，这对于解决某些特定问题是最精确的。
+
+若在 z 方向无限，则可将 Maxwell 方程分解为 TE 和 TM 两部分方程：
+
+- Transverse electric (TE): involes only $E_x, E_y, H_z$
+- Transverse magnetic (TM): involes only $E_z, H_x, H_y$
+
+### 2.2.3. Memory and Time Requirements
+
+||3D|2D|
+|---|---|---|
+|Memory req.| $\sim (\lambda / \Delta x)^3$ | $\sim (\lambda / \Delta x)^2$ |
+|Sim. time| $\sim (\lambda / \Delta x)^4$ | $\sim (\lambda / \Delta x)^3$ |
+
+**Grid points per wavelength: $\lambda /\Delta x = \lambda _0/(n \Delta x)$**
+
+For calculation tasks like transmission and reflection, when: 
+
+- $\lambda /\Delta x = 6$, <10% ~ 20% Error(away from the correct answer)
+- $\lambda /\Delta x = 10$, <1% ~ 2% Error
+
+Options: $Mesh\ accuracy = 1, \ 2, \ 3, \ 4, \ ...\ 8$ corresponds to $\lambda /\Delta x = 6, \ 10, \ 14, \ 18, \ ...\ 34$
+
+This options can **automatically change** in different meterial
+
+- always start with 1 or 2
+- More than 4 is almost never necessary
