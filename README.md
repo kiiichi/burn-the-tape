@@ -205,9 +205,9 @@ T(f) is the normalized transmission as a function of frequency, P(f) is the Poyn
 
 # 2. FDTD Algorithm
 
-## 2.2. FDTD method
+## 2.1. FDTD method
 
-### 2.2.1. How the solver get the field components within the grid cell (Yee cell)?
+### 2.1.1. How the solver get the field components within the grid cell (Yee cell)?
 
 FDTD将空间和时间划分为离散网格并求阶麦克斯韦方程，空间的网格步长为 $\delta x$ $\delta y$ $\delta z$，时间的网格步长为 $\delta t$，分别用 i, j, k, n 表示。步长习惯用上标和下标表示。例如：
 - $\overrightarrow{E} ^{n+\frac{1}{2}} _{i+\frac{1}{2}}$ 表示 E 在时间为 n，空间 x 方向为 i 时，以 1/2 的步长求解。
@@ -220,7 +220,7 @@ FDTD将空间和时间划分为离散网格并求阶麦克斯韦方程，空间�
 
 Mesh 的最小单元 Yee Cell 与时间交替采样类似，在空间上对 $E_x \ E_y \ E_z \ H_x \ H_y \ H_z$ 也采用交错采样，即使每一个磁场分量由四个电场分量环绕，每一个电场分量由四个磁场分量环绕。在 Monitor 出数据时，会对所有的空间分量进行插值来得到场在 Yee Cell 中心的值。**对于一些特殊的计算，如计算金属表面的光的吸收等，可以关闭此插值。**
 
-### 2.2.2. 2D vs 3D FDTD
+### 2.1.2. 2D vs 3D FDTD
 
 2D 相当于材料在 z 方向上长度无限，这对于解决某些特定问题是最精确的。
 
@@ -229,7 +229,7 @@ Mesh 的最小单元 Yee Cell 与时间交替采样类似，在空间上对 $E_x
 - Transverse electric (TE): involes only $E_x, E_y, H_z$
 - Transverse magnetic (TM): involes only $E_z, H_x, H_y$
 
-### 2.2.3. Memory and Time Requirements
+### 2.1.3. Memory and Time Requirements
 
 ||3D|2D|
 |---|---|---|
