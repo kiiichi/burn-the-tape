@@ -217,9 +217,7 @@ FDTD将空间和时间划分为离散网格并求阶麦克斯韦方程，空间�
 
 - $\overrightarrow{H}^0 \xrightarrow{Maxwell} \overrightarrow{E}^\frac{1}{2} \xrightarrow{Maxwell} \overrightarrow{H}^1 \to \overrightarrow{E}^\frac{3}{2} \to \overrightarrow{H}^2 \to \overrightarrow{E}^\frac{5}{2} \to \overrightarrow{H}^3 \to ...$
 
-可见 E 与 H 不会在同一时间被计算，他们总是偏移了 1/2 个时间步长。在 Monitor 出数据时，会对 E 进行插值，以消去这个偏移。这将使得 FDTD 计算的电磁场与正确解之间的**误差 $Error$ 将随着时间步长 $\delta t$ 的平方变化：**
-
-$Error\propto \delta t^2$
+可见 E 与 H 不会在同一时间被计算，他们总是偏移了 1/2 个时间步长。在 Monitor 出数据时，会对 E 进行插值，以消去这个偏移。这将使得 FDTD 计算的电磁场与正确解之间的**误差 $Error$ 将随着时间步长 $\delta t$ 的平方变化：$Error\propto \delta t^2$**
 
 Mesh 的最小单元 Yee Cell 与时间交替采样类似，在空间上对 $E_x \ E_y \ E_z \ H_x \ H_y \ H_z$ 也采用交错采样，即使每一个磁场分量由四个电场分量环绕，每一个电场分量由四个磁场分量环绕。在 Monitor 出数据时，会对所有的空间分量进行插值来得到场在 Yee Cell 中心的值。**对于一些特殊的计算，如计算金属表面的光的吸收等，可以关闭此插值。**
 
