@@ -10,9 +10,10 @@ FDTD is finite difference time domain 时域有限差分算法
 
 使用 lumerical FDTD 的优势有：
 
-1. 可以模拟任意的几何形状（可以通过FDTD方法求解任意的 Maxwell's equations）。
+1. 通用。可以模拟任意的几何形状（可以通过FDTD方法求解任意的 Maxwell's equations）。
 2. 在波长尺度的求解较为精确。
 3. 受益于时域分析的性质，单次模拟就可以给出宽频带的结果。
+4. 快。
 
 使用 lumerical FDTD 的 workflow：
 
@@ -92,8 +93,8 @@ FDTD is finite difference time domain 时域有限差分算法
    - 是Periodic的一般形式；它是一种普遍的边界条件，由于数学上要求它只能针对指定的波长有指定的入射角，其它波长的实际入射角将不同于指定的那个入射角，因此一般情况下，它适合单波长计算。
 
 5. **Symmetric/anti-symmetric**
-   - 对称/反对称边界条件。要求：结构对称性，光源的偏振也要对称。
-   [参考](https://optics.ansys.com/hc/en-us/articles/360034382694-Symmetric-and-anti-symmetric-BCs-in-FDTD-and-MODE)
+   - 对称/反对称边界条件。要求：结构对称性，光源的偏振也要对称。 
+   详见参考： https://optics.ansys.com/hc/en-us/articles/360034382694-Symmetric-and-anti-symmetric-BCs-in-FDTD-and-MODE
 
 6. **PMC**
    - PMC boundary conditions are the magnetic equivalent of the PEC boundaries. The component of the magnetic field parallel to a PMC boundary is zero and the component of the electric field perpendicular to a PMC boundary is also zero.
@@ -110,25 +111,30 @@ Can only choose pulse light, may because of time domain...
 ### 1.2.4. Set Monitor
 
 It is fine for the monitors to extend outside of the simulation region.
-
 1. Refractive index
    - Measures refractive index and surface conductivity over space.
    - Used to check mesh order and meshed structure cross-section.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034383134-Monitors-Refractive-index)
 2. Field time
    - Measures E, H fields over time by default.
    - Returns E, H, the spectrum of E and H.
    - Record and return P if specified.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902353-Monitors-Field-time)
 3. Movie
    - Generates an mp4 movie file in the current working directory showing the specified field component vs. time over the monitor area.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902373-Monitors-Movie)
 4. Frequency-domain monitors (power and profile)
    - Shows frequency-domain E, H data by default.
    - Returns E, H and T.
    - T gives net transmission and is only available for linear or 2D monitors in 2D simulations or 2D monitors in 3D simulations.
    - Can return P if specified.
    - The only difference between the two monitor types is the spatial interpolation method used.Power uses the nearest mesh cell interpolation, whereas profile uses the specified position.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902393-Monitors-Frequency-domain-profile-power-)
+   
 5. Mode expansion
    - Performs overlap calculations between calculated modes and recorded fields from a frequency domain monitor to get the power traveling in selected modes of a waveguide or fiber.
    - Can be used to extract S-parameters of a device, although using Port objects is simpler.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902413-Monitors-Mode-expansion)
 6. ports
    - Added using the Ports button in the top toolbar.
    - Acts as a mode source as well as a power monitor and mode expansion monitor.
@@ -143,10 +149,9 @@ It is fine for the monitors to extend outside of the simulation region.
 无论是储存在 database 里现成的数据还是我们导入的数据都是点集，而模拟需要使用连续的函数，因此需要先对数据集进行拟合得到拟合方程。正确的数据和有效的拟合是仿真准确的必要条件。因此每当更换材料或仿真波长范围都应检查拟合是否合适。
 
 - [提升拟合效果的方法](https://optics.ansys.com/hc/en-us/articles/360034915053)：
-默认情况下，采样数据材质的容差为0.1，最大系数为6。在许多情况下，这些都是合理的值。但是，在运行模拟之前检查拟合始终是一个好的做法。过拟合和欠拟合都不是好的选择。
-
+默认情况下，采样数据材质的容差为0.1，最大系数为6。在许多情况下，这些都是合理的值。但是，在运行模拟之前检查配合始终是一个好的做法。过拟合和欠拟合都不是好的选择。
   1. Fit tolerance: 可以将该值设为0，在这种情况下程序将在 Max coefficients 的限制下尽可能找到最小的 RMS
-  2. Max coefficients: ...
+  2. Max coefficients
 
 ### 1.3.2. Check memory requirements
 
@@ -160,44 +165,29 @@ If memory requirements are too high, to reduce memory requirements:
 
 Status: initialization -> meshing -> running -> saving
 
-## 1.4. Export data(Frequency-domain Profile and Power monitor )
 
-参考: <https://optics.ansys.com/hc/en-us/articles/360034902393-Frequency-domain-Profile-and-Power-monitor-Simulation-object>
+## 1.4. export data(Frequency-domain Profile and Power monitor )
+参考:https://optics.ansys.com/hc/en-us/articles/360034902393-Frequency-domain-Profile-and-Power-monitor-Simulation-object
 
-### 1.4.1. E (Electric field)
+### 1.4.1. E: Electric field data as a function of position and frequency/wavelength.
 
-Electric field data as a function of position and frequency/wavelength
+#### 1.4.1.1.  Vactor OPeration： XYZ三个分量和Magnitude。 其中 Magnitude=sqrt(abs(Ex)^2+abs(Ey)^2+abs(Ez)^2)
+#### 1.4.1.2. Scalar OPeration:
+ - Re： 是显示量的实部，一般用于复数，比如Ex，Ey和Ez等；或者透射率T（它没有虚部）;
+ - -Re： 将实部取负号，这个操作一般仅适用于透射率，这是因为透射率根据颇印廷矢量与监视器法线方向点乘后积分得到的，而监视器法线按规定是沿轴正向为正，沿负向为负，因此当能流沿轴负向传播时，得到的透射率是负的，需要在前面加负号才能为正。
+ - Abs：取绝对值。
+ - Abs^2：取绝对值平方。
+ - angle：相位
 
-1. Vactor Operation
-   - XYZ三个分量和Magnitude。其中
-   $Magnitude = \sqrt{ \lvert Ex \rvert^2 + \lvert Ey \rvert^2 + \lvert Ez \rvert^2}$
 
-2. Scalar Operation
+   参考https://forum.ansys.com/forums/topic/ansys-insight-%e6%9c%89%e5%85%b3visualizer%e7%9a%84%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98/
 
-   - Re： 是显示量的实部，一般用于复数，比如Ex，Ey和Ez等；或者透射率T（它没有虚部）;
-   - -Re： 将实部取负号，这个操作一般仅适用于透射率，这是因为透射率根据颇印廷矢量与监视器法线方向点乘后积分得到的，而监视器法线按规定是沿轴正向为正，沿负向为负，因此当能流沿轴负向传播时，得到的透射率是负的，需要在前面加负号才能为正。
-   - Abs：取绝对值。
-   - Abs^2：取绝对值平方。
-   - angle：相位
+### 1.4.2. H： Magnetic field data as a function of position and frequency/wavelength.
+### 1.4.3. P： Poynting vector as a function of position and frequency/wavelength.
+### 1.4.4. T： Transmission as a function of frequency/wavelengt. 
+Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power.(Negative values mean the power is flowing in the negative direction.)
+$T(f)=\frac{\frac{1}{2}\int Re(P(f))dS }{sourcepower(f)}$ (T(f) is the normalized transmission as a function of frequency，P(f) is the Poynting vector and dS is the surface normal.)
 
-      参考: <https://forum.ansys.com/forums/topic/ansys-insight-%e6%9c%89%e5%85%b3visualizer%e7%9a%84%e7%9b%b8%e5%85%b3%e9%97%ae%e9%a2%98/>
+参考:https://optics.ansys.com/hc/en-us/articles/360034405354-transmission-Script-command
 
-### 1.4.2. H (Magnetic field)
 
-Magnetic field data as a function of position and frequency/wavelength
-
-### 1.4.3. P (Poynting vector)
-
-Poynting vector as a function of position and frequency/wavelength
-
-### 1.4.4. T (Transmission)
-
-Transmission as a function of frequency/wavelength
-
-- Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power. (Negative values mean the power is flowing in the negative direction.)
-
-$T(f)=\frac{\frac{1}{2}\int Re(P(f)) dS }{sourcepower(f)}$
-
-T(f) is the normalized transmission as a function of frequency, P(f) is the Poynting vector and dS is the surface normal.
-
-参考: <https://optics.ansys.com/hc/en-us/articles/360034405354-transmission-Script-command>
