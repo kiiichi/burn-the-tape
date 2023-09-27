@@ -170,10 +170,6 @@ Status: initialization -> meshing -> running -> saving
 ## 1.4. export data(Frequency-domain Profile and Power monitor )
 参考:https://optics.ansys.com/hc/en-us/articles/360034902393-Frequency-domain-Profile-and-Power-monitor-Simulation-object
 
-
-
-### 1.4.2. H： Magnetic field data as a function of position and frequency/wavelength.
-### 1.4.3. P： Poynting vector as a function of position and frequency/wavelength.
 ### 1.4.4. T： Transmission as a function of frequency/wavelengt. 
 Returns the amount of power transmitted through power monitors and profile monitors, normalized to the source power.(Negative values mean the power is flowing in the negative direction.)
 $T(f)=\frac{\frac{1}{2}\int Re(P(f))dS }{sourcepower(f)}$ (T(f) is the normalized transmission as a function of frequency，P(f) is the Poynting vector and dS is the surface normal.)
