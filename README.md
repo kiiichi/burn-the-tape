@@ -250,3 +250,9 @@ This options can **automatically change** in different meterial
 
 - always start with 1 or 2
 - More than 4 is almost never necessary
+
+## 2.2.Getting Frequency Domain Results Using FDTD
+
+The solver calculates $\vec{E}(t)$ and $\vec{H}(t)$ in time domain. If we want frequency domain results like $\vec{E}(\omega)$ we need to do fourier transform:
+
+$\vec{E}(\omega) = \int_0^{T_{SIM}} e^{i\omega t} \vec{E}(t)dt$
