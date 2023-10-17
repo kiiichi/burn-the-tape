@@ -11,9 +11,10 @@ FDTD is finite difference time domain 时域有限差分算法
 
 使用 lumerical FDTD 的优势有：
 
-1. 可以模拟任意的几何形状（可以通过FDTD方法求解任意的 Maxwell's equations）。
+1. 通用。可以模拟任意的几何形状（可以通过FDTD方法求解任意的 Maxwell's equations）。
 2. 在波长尺度的求解较为精确。
 3. 受益于时域分析的性质，单次模拟就可以给出宽频带的结果。
+4. 快。
 
 使用 lumerical FDTD 的 workflow：
 
@@ -57,12 +58,21 @@ FDTD is finite difference time domain 时域有限差分算法
 
 #### 1.2.1.1. General settings
 
-设置2D/3D，背景折射率，仿真时间(注：run过程中，如果process一直跑到100%才结束，说明仿真时间太短了，需修改)；FDTD Solutions默认设置的模拟时间是1000fs(必须保证有足够时间使结果收敛)，而模拟会在场衰减到小于用户定义的电场强度时(默认设置是1E-5)自动结束；仿真时间一般至少是光经过高折射率材料的仿真区域所用时间的两倍(choose a simulation time that is at least as twice as long as the time it would take light to travel across the entire simulation area in the material with the highest index of refraction), eg: t＞2nL/c
+设置2D/3D，背景折射率，仿真时间(注：run过程中，如果process一直跑到100%才结束，说明仿真时间太短了，需修改)，温度(在模拟中使用了折射率随温度扰动的材料时才有影响)；FDTD Solutions默认设置的模拟时间是1000fs(必须保证有足够时间使结果收敛)，而模拟会在场衰减到小于用户定义的电场强度时(默认设置是1E-5)自动结束；仿真时间一般至少是光经过高折射率材料的仿真区域所用时间的两倍(choose a simulation time that is at least as twice as long as the time it would take light to travel across the entire simulation area in the material with the highest index of refraction), eg: t＞2nL/c
 参考：<https://blog.csdn.net/HECHUANWANG/article/details/95976174>
 
 #### 1.2.1.2. Mesh settings
 
-设置网格类型、网格精度、亚网格处理(材料界面处理)，推荐使用默认的自适应网格，精度使用默认2(初始使用，如有需要再提高精度)，材料界面处理选择默认0(注意：conformal variant 1通常只适合在低折射率对比的情况下使用，并不一定适合所有的金属材料)；FDTD Solutions还提供mesh，在仿真区域内设置，即局部网格设置。一般情况下，这些局部网格（当然如果必要也可以将整个仿真区覆盖，不过一般不建议这样做，因为有其它的方法可以设置）都是为了进一步将某局部网格细化，例如分辨几何细节，高掺杂区，感兴趣所的量局部变化梯度很大等。也有个别时候反而是将网格加粗，这种粗化网格的使用需要慎重，除非你清楚知道原因和后果。mesh的典型应用是dx=dy＜lamda/(10n)，n是材料中的最高折射率
+设置网格类型(默认为auto non-uniform，网格将根据材料属性、波长、所需精度自动调整)、网格精度、亚网格处理(材料界面处理)，推荐使用默认的自适应网格，精度使用默认2(初始使用，如有需要再提高精度)，材料界面处理选择默认0；FDTD Solutions还提供mesh，在仿真区域内设置，即局部网格设置。一般情况下，这些局部网格（当然如果必要也可以将整个仿真区覆盖，不过一般不建议这样做，因为有其它的方法可以设置）都是为了进一步将某局部网格细化，例如分辨几何细节，高掺杂区，感兴趣所的量局部变化梯度很大等。也有个别时候反而是将网格加粗，这种粗化网格的使用需要慎重，除非你清楚知道原因和后果。mesh的典型应用是dx=dy＜lamda/(10n)，n是材料中的最高折射率
+在折射率高的材料中有效波长更短，所以网格更小。
+
+- Mesh refinement
+控制在模拟中如何处理材料接口/界面，在模拟曲面结构时尤为重要。
+    1. Staircase : 一整个单元格将被占据单元格大部分体积的材料填满。
+    2. Conformal variant 0 : 适用于所有非金属材
+    料界面的网格划分算法。(为默认选择)
+    3. Conformal variant 1 : 适用于涉及金属界面的模拟，使用时需要额外的收敛测试。(通常只适合在低折射率对比的情况下使用，并不一定适合所有的金属材料)
+    
 
 #### 1.2.1.3. Boundary conditions
 
@@ -94,11 +104,15 @@ FDTD is finite difference time domain 时域有限差分算法
 
 5. **Symmetric/anti-symmetric**
    - 对称/反对称边界条件。要求：结构对称性，光源的偏振也要对称。
-   [参考](https://optics.ansys.com/hc/en-us/articles/360034382694-Symmetric-and-anti-symmetric-BCs-in-FDTD-and-MODE)
+   详见参考： https://optics.ansys.com/hc/en-us/articles/360034382694-Symmetric-and-anti-symmetric-BCs-in-FDTD-and-MODE
 
 6. **PMC**
    - PMC boundary conditions are the magnetic equivalent of the PEC boundaries. The component of the magnetic field parallel to a PMC boundary is zero and the component of the electric field perpendicular to a PMC boundary is also zero.
    - [reference](https://optics.ansys.com/hc/en-us/articles/360045467453-Simulation-Tips-Accuracy-and-Performance-Tips-Boundary-Conditions)
+
+#### 1.2.1.4. Simulation bandwidth
+
+设置比源带宽更大的模拟带宽(适用于非线性材料，例如二次谐波的产生)
 
 ### 1.2.2. Set Mesh
 
@@ -115,21 +129,27 @@ It is fine for the monitors to extend outside of the simulation region.
 1. Refractive index
    - Measures refractive index and surface conductivity over space.
    - Used to check mesh order and meshed structure cross-section.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034383134-Monitors-Refractive-index)
 2. Field time
    - Measures E, H fields over time by default.
    - Returns E, H, the spectrum of E and H.
    - Record and return P if specified.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902353-Monitors-Field-time)
 3. Movie
    - Generates an mp4 movie file in the current working directory showing the specified field component vs. time over the monitor area.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902373-Monitors-Movie)
 4. Frequency-domain monitors (power and profile)
    - Shows frequency-domain E, H data by default.
    - Returns E, H and T.
    - T gives net transmission and is only available for linear or 2D monitors in 2D simulations or 2D monitors in 3D simulations.
    - Can return P if specified.
-   - Power uses the nearest mesh cell interpolation, whereas profile uses the specified position.
+   - The only difference between the two monitor types is the spatial interpolation method used.Power uses the nearest mesh cell interpolation, whereas profile uses the specified position.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902393-Monitors-Frequency-domain-profile-power-)
+   
 5. Mode expansion
    - Performs overlap calculations between calculated modes and recorded fields from a frequency domain monitor to get the power traveling in selected modes of a waveguide or fiber.
    - Can be used to extract S-parameters of a device, although using Port objects is simpler.
+   - [reference](https://optics.ansys.com/hc/en-us/articles/360034902413-Monitors-Mode-expansion)
 6. ports
    - Added using the Ports button in the top toolbar.
    - Acts as a mode source as well as a power monitor and mode expansion monitor.
@@ -141,13 +161,14 @@ It is fine for the monitors to extend outside of the simulation region.
 
 ### 1.3.1. Check meterials properties
 
+在每一次使用新的材料或者新的源波长范围都应检查材料是否符合。
 无论是储存在 database 里现成的数据还是我们导入的数据都是点集，而模拟需要使用连续的函数，因此需要先对数据集进行拟合得到拟合方程。正确的数据和有效的拟合是仿真准确的必要条件。因此每当更换材料或仿真波长范围都应检查拟合是否合适。
 
 - [提升拟合效果的方法](https://optics.ansys.com/hc/en-us/articles/360034915053)：
-默认情况下，采样数据材质的容差为0.1，最大系数为6。在许多情况下，这些都是合理的值。但是，在运行模拟之前检查拟合始终是一个好的做法。过拟合和欠拟合都不是好的选择。
-
+默认情况下，采样数据材质的容差为0.1，最大系数为6。在许多情况下，这些都是合理的值。但是，在运行模拟之前检查配合始终是一个好的做法。过拟合和欠拟合都不是好的选择。
   1. Fit tolerance: 可以将该值设为0，在这种情况下程序将在 Max coefficients 的限制下尽可能找到最小的 RMS
-  2. Max coefficients: ...
+  2. Max coefficients: 值越大，拟合中出现的拐点越多，在拟合中并不是该值越大越好，在增大该值不会使拟合效果更好时应尽可能选取最小值，值选取较大时可能会产生拟合无关的峰值。
+  3. imaginary weight: 是对介电常数或电导率的虚部与实部的拟合的相对权重。默认情况下，它被设置为1，以平等地考虑实部和虚部。与实部相比，值为2将给数据的虚部提供两倍的权重，值为0.5将给实部提供两倍的权重。
 
 ### 1.3.2. Check memory requirements
 
@@ -160,7 +181,6 @@ If memory requirements are too high, to reduce memory requirements:
 ### 1.3.3. Job manager during simulation
 
 Status: initialization -> meshing -> running -> saving
-
 ## 1.4. Export data(Frequency-domain Profile and Power monitor )
 
 参考: <https://optics.ansys.com/hc/en-us/articles/360034902393-Frequency-domain-Profile-and-Power-monitor-Simulation-object>
@@ -202,6 +222,7 @@ $T(f)=\frac{\frac{1}{2}\int Re(P(f)) dS }{sourcepower(f)}$
 T(f) is the normalized transmission as a function of frequency, P(f) is the Poynting vector and dS is the surface normal.
 
 参考: <https://optics.ansys.com/hc/en-us/articles/360034405354-transmission-Script-command>
+
 
 # 2. FDTD Algorithm
 
@@ -253,6 +274,37 @@ This options can **automatically change** in different meterial
 
 ## 2.2.Getting Frequency Domain Results Using FDTD
 
-The solver calculates $\vec{E}(t)$ and $\vec{H}(t)$ in time domain. If we want frequency domain results like $\vec{E}(\omega)$ we need to do fourier transform:
+The solver calculates $\vec{E}(t)$ and $\vec{H}(t)$ in time domain. If we want frequency domain results like $\vec{E}(\omega)$ we need to do fourier transform [reference](https://optics.ansys.com/hc/en-us/articles/360034394234-Frequency-domain-normalization) :
 
-$\vec{E}(\omega) = \int_0^{T_{SIM}} e^{i\omega t} \vec{E}(t)dt$
+$\vec{E}(\omega) = \int_0^{T_{SIM}} e^{i\omega t} \vec{E}(t)dt$ (未归一化)
+
+- $\vec{P}(w)$ 是由电场和磁场的傅里叶变换形式推导而来: $\vec{P}(\omega) = \vec{E}(w)×\vec{H}(w)^*$
+
+# 3.Material Properties
+
+## 3.1. Default Materials
+
+### 3.1.1. Mesh order 网格顺序
+
+当两种材料在同一区域内重叠时，网格顺序确定哪一个材料获取优先权。
+
+## 3.2. Material Database
+
+### 3.2.1. The (n,k) material
+
+仅用于单频率源，只给出源中心频率的折射率值。
+参考: (https://optics.ansys.com/hc/en-us/articles/360034394654--n-k-Material-Model)
+
+### 3.2.2. nonlinear material
+
+默认模拟设置是对线性材料而言，非线性材料模拟时需要更加小心设置。
+参考: https://optics.ansys.com/hc/en-us/sections/360007004493-Nonlinear
+(更详细的还需继续学习)
+
+### 3.2.3. Index perturbation
+
+折射率为载流子浓度或温度相关的函数。
+
+# 4. Solver Region
+
+用于指定被模拟的区域和体积、时间、网格、边界条件。
