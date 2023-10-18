@@ -53,7 +53,7 @@ The **built-in parameter sweep** and **optimization tool** can be used to help a
 
 Demo for Soi rib waveguide
 
-### Step :
+### Steps
 
 1. Add a rectangle as the glass substrate
 
@@ -90,3 +90,25 @@ Demo for Soi rib waveguide
 
    - In the **General** tab , select the **set maxmium mesh step** option , and both set the **dx** & **dy** is 0.02 μm
    - In the **Geometry** tab , select the **based on a structure** option and type 'Si' in the **structure**
+
+***
+
+## 4. Run Demo
+
+### Steps
+
+1. Click **Run** , in the **Engiensolver Analysis** window , we can set the calculation parameters
+
+   - In the **Modal analysis** tab , set the **wavelength** is 1.5 μm and the **number of trial modes** is 10
+   - Assure the **use max index** was be selected
+   - Click the **mesh structure** to display the material properities in the plot area
+   - Click the **calculate modes** to start this calculating
+
+   - When the calculating is finished , we can select a mode what we want in the **Mode list** and see its field profile in the plot area
+
+2. Recalculate the modes using a finer mesh
+
+   - Click **Layout**
+   - Edit the mesh override object and both set the mesh is 0.01 μm in **dx** and **dy**
+
+We can iterate these steps to get optimal results
