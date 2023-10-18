@@ -47,3 +47,46 @@ Based on [Ansys](https://courses.ansys.com/index.php/learning-track/ansys-lumeri
 You can iterate the step **'Run'** to **'Modify simulation'**
 
 The **built-in parameter sweep** and **optimization tool** can be used to help automate this process
+***
+
+## 3. Setting Up the Simulation
+
+Demo for Soi rib waveguide
+
+### Step :
+
+1. Add a rectangle as the glass substrate
+
+   click **Structure** -> **rectangle**
+
+   - In the **Geometry** tab , both set the **x span** & the **y span** is 10 μm
+
+   - In the **Material** tab , set the **material** is **SiO2(Glass) - Palik**
+
+   - Rename the object **SiO2**
+
+2. Add another rectangle as the silicon waveguide
+
+   click **Structure** -> **rectangle**
+
+   - In the **Geometry** tab , set the **x span** is 0.5 μm and set the **y span** is 0.22 μm
+
+   - In the **Material** tab , set the **material** is **Si (silicon) - Palik**
+
+   - Rename the object **Si**
+
+3. Add the engienmode solver after the structure is defined
+
+   click **Simulation** -> **Eigenmode solver**
+
+   - In the **General** tab , set the **background index** is 1
+   - In the **Geometry** tab , both set the **x span** & the **y span** is 4 μm
+   - In the **Boundary condition** tab set the bc is **metal**
+   - In the **Material** tab , select the **fit materials with multi-coefficient moder** and the **fit sampled materials** option , and then set the **wavelength** range is 1.5 μm to 1.6 μm
+
+4. Add a mesh override region
+
+   click **Simulation** -> **Mesh**
+
+   - In the **General** tab , select the **set maxmium mesh step** option , and both set the **dx** & **dy** is 0.02 μm
+   - In the **Geometry** tab , select the **based on a structure** option and type 'Si' in the **structure**
