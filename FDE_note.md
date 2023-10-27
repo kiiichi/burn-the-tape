@@ -116,16 +116,43 @@ We can iterate these steps to get optimal results
 
 ## 5. Analysis Demo
 
-- In the **eigensolver analysis** window , you can find the mode list shows the effective index of each mode , the loss and polarization fractions.
+- In the **eigensolver analysis** window , you can find the mode list shows the effective index of each mode , the loss and polarization fractions
 
-- We can polt the material roperties or the model fields and to select whitch component to plot in mode plot options.
+- We can polt the material roperties or the model fields and to select whitch component to plot in mode plot options
 
-- We can zoom in and out of the plot using mouse buttons.
+- We can zoom in and out of the plot using mouse buttons
 
 - Frequency
 
-   - The frequency sweep setting can be found in the **Frequency analysis** tab. There We can set the wavelength range starting at 1.5 micron to 1.6micron. Set the **number of points** to sweep to 10 and the **number of test modes** to 8.
+  - The frequency sweep setting can be found in the **Frequency analysis** tab. There We can set the wavelength range starting at 1.5 micron to 1.6micron. Set the **number of points** to sweep to 10 and the **number of test modes** to 8
+  - The **track selected mode** use **detailed dispersion calculation** and **store mode profiles** while tracking need to be selected to export the resulting data to interconnect whitch is numerical photonic integrated circuit simulator
+  - Make sure the fundamental TE mode of the waveguide is selected before running the sweep since this is our mode of interest to run the calculation click **frequency sweep**
 
-   - The **track selected mode** use **detailed dispersion calculation** and **store mode profiles** while tracking need to be selected to export the resulting data to interconnect whitch is numerical photonic integrated circuit simulator.
+***
 
-   - Make sure the fundamental TE mode of the waveguide is selected before running the sweep since this is our mode of interest to run the calculation click **frequency sweep**.
+## 6. Application Examples
+
+- Single mode condition
+  - Mode calculation
+  - Frequency swep
+
+- Power coupling between fiber and waveguide
+  - Calculate modes for fiber and waveguide
+  - Calculate overlap between modes
+
+- Photonic Crystal Fiber
+  - Mode analysis
+  - Bent loss analysis
+
+- Evanescent Waveguide Coupler
+  - Determine the coupling length
+
+- 90 Degree Waveguide Bend
+  - Total loss
+  - Bending loss
+
+- Magneto - Optical Waveguide
+  - Dispersion analysis
+
+- Helical Waveguide
+  - Find circularly polarized modes
