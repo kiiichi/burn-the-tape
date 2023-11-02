@@ -47,3 +47,112 @@ Based on [Ansys](https://courses.ansys.com/index.php/learning-track/ansys-lumeri
 You can iterate the step **'Run'** to **'Modify simulation'**
 
 The **built-in parameter sweep** and **optimization tool** can be used to help automate this process
+***
+
+## 3. Setting Up the Simulation
+
+Demo for Soi rib waveguide
+
+### Steps
+
+1. Add a rectangle as the glass substrate
+
+   click **Structure** -> **rectangle**
+
+   - In the **Geometry** tab , both set the **x span** & the **y span** is 10 μm
+
+   - In the **Material** tab , set the **material** is **SiO2(Glass) - Palik**
+
+   - Rename the object **SiO2**
+
+2. Add another rectangle as the silicon waveguide
+
+   click **Structure** -> **rectangle**
+
+   - In the **Geometry** tab , set the **x span** is 0.5 μm and set the **y span** is 0.22 μm
+
+   - In the **Material** tab , set the **material** is **Si (silicon) - Palik**
+
+   - Rename the object **Si**
+
+3. Add the engienmode solver after the structure is defined
+
+   click **Simulation** -> **Eigenmode solver**
+
+   - In the **General** tab , set the **background index** is 1
+   - In the **Geometry** tab , both set the **x span** & the **y span** is 4 μm
+   - In the **Boundary condition** tab set the bc is **metal**
+   - In the **Material** tab , select the **fit materials with multi-coefficient moder** and the **fit sampled materials** option , and then set the **wavelength** range is 1.5 μm to 1.6 μm
+
+4. Add a mesh override region
+
+   click **Simulation** -> **Mesh**
+
+   - In the **General** tab , select the **set maxmium mesh step** option , and both set the **dx** & **dy** is 0.02 μm
+   - In the **Geometry** tab , select the **based on a structure** option and type 'Si' in the **structure**
+
+***
+
+## 4. Run Demo
+
+### Steps
+
+1. Click **Run** , in the **Engiensolver Analysis** window , we can set the calculation parameters
+
+   - In the **Modal analysis** tab , set the **wavelength** is 1.5 μm and the **number of trial modes** is 10
+   - Assure the **use max index** was be selected
+   - Click the **mesh structure** to display the material properities in the plot area
+   - Click the **calculate modes** to start this calculating
+
+   - When the calculating is finished , we can select a mode what we want in the **Mode list** and see its field profile in the plot area
+
+2. Recalculate the modes using a finer mesh
+
+   - Click **Layout**
+   - Edit the mesh override object and both set the mesh is 0.01 μm in **dx** and **dy**
+
+We can iterate these steps to get optimal results
+***
+
+## 5. Analysis Demo
+
+- In the **eigensolver analysis** window , you can find the mode list shows the effective index of each mode , the loss and polarization fractions
+
+- We can polt the material roperties or the model fields and to select whitch component to plot in mode plot options
+
+- We can zoom in and out of the plot using mouse buttons
+
+- Frequency
+
+  - The frequency sweep setting can be found in the **Frequency analysis** tab. There We can set the wavelength range starting at 1.5 micron to 1.6micron. Set the **number of points** to sweep to 10 and the **number of test modes** to 8
+  - The **track selected mode** use **detailed dispersion calculation** and **store mode profiles** while tracking need to be selected to export the resulting data to interconnect whitch is numerical photonic integrated circuit simulator
+  - Make sure the fundamental TE mode of the waveguide is selected before running the sweep since this is our mode of interest to run the calculation click **frequency sweep**
+
+***
+
+## 6. Application Examples
+
+- Single mode condition
+  - Mode calculation
+  - Frequency swep
+
+- Power coupling between fiber and waveguide
+  - Calculate modes for fiber and waveguide
+  - Calculate overlap between modes
+
+- Photonic Crystal Fiber
+  - Mode analysis
+  - Bent loss analysis
+
+- Evanescent Waveguide Coupler
+  - Determine the coupling length
+
+- 90 Degree Waveguide Bend
+  - Total loss
+  - Bending loss
+
+- Magneto - Optical Waveguide
+  - Dispersion analysis
+
+- Helical Waveguide
+  - Find circularly polarized modes
